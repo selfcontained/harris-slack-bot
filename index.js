@@ -1,4 +1,5 @@
-var Slack = require('slack-client')
+var Botkit = require('botkit')
+var getMessage = require('./messages/')
 
 // Expect a SLACK_TOKEN environment variable
 var slackToken = process.env.SLACK_TOKEN
@@ -7,51 +8,77 @@ if (!slackToken) {
   process.exit(1)
 }
 
-// Create a new Slack client with our token
-var slack = new Slack(slackToken, true, true)
-
-// bot will be initialized when logged in
-var bot
-
-// handle loggedIn event
-slack.on('loggedIn', function (user, team) {
-  bot = user
-  console.log('I am ' + user.name + ' of team ' + team.name)
+var controller = Botkit.slackbot({
+  debug: false
 })
 
-// show status when we conntect
-slack.on('open', function () {
-  console.log('Connected')
+// connect the bot to a stream of messages
+controller.spawn({
+  token: slackToken
+}).startRTM(function (err, bot, payload) {
+  if (err) {
+    throw new Error('Error connecting to slack: ', err)
+  }
+
+  console.log('Connected to slack')
 })
 
-// register a handler for messages
-slack.on('message', function (message) {
-  if (isMe(message, bot.id)) return
-  if (!isMentioned(message, bot.id) && !isDM(message, bot.id)) return
+controller.hears('how are you', ['direct_message', 'direct_mention', 'mention'], function (bot, message) {
+  bot.startConversation(message, function (err, convo) {
+    if (err) {
+      return console.log(err)
+    }
 
-  console.log('Received message ' + message)
-
-  // We recieved a message that wasn't from us and either mentioned us or was a DM to us
-  // Let's ust say hi
-  var channel = slack.getChannelGroupOrDMByID(message.channel)
-  channel.send('Good day to you from https://beepboophq.com!')
+    convo.ask("I'm doing great, how are you?", [
+      {
+        pattern: 'good',
+        callback: function (resp, convo) {
+          convo.say("That's good to hear. :smile:")
+          convo.next()
+        }
+      },
+      {
+        pattern: 'bad',
+        callback: function (resp, convo) {
+          convo.say("I'm sorry to hear that.  Feel better :hugging_face:")
+          convo.next()
+        }
+      },
+      {
+        default: true,
+        callback: function (response, convo) {
+          convo.say("I don't really know what you said, but I hope you're feeling ok. :smile:")
+          convo.next()
+        }
+      }
+    ])
+  })
 })
 
-// initiate login
-slack.login()
+controller.hears('ugly sweater', ['ambient'], function (bot, message) {
+  bot.reply(message, 'https://dl.dropboxusercontent.com/u/4286295/IMG_0281.jpg?idx=' + Date.now())
+})
 
-// ----------------------------------------------------------------------------
-// Utilities
-// ----------------------------------------------------------------------------
+controller.hears('dad', ['ambient'], function (bot, message) {
+  bot.reply(message, getMessage('DAD'))
+})
 
-function isMentioned (message, userId) {
-  return message.text.indexOf('<@' + userId) >= 0
-}
+controller.hears('mom', ['ambient'], function (bot, message) {
+  bot.reply(message, getMessage('MOM'))
+})
 
-function isMe (message, userId) {
-  return message.user === userId
-}
+controller.hears('devin', ['ambient'], function (bot, message) {
+  bot.reply(message, getMessage('DEVIN'))
+})
 
-function isDM (message, userId) {
-  return message.channel[0] === 'D'
-}
+controller.hears('reese', ['ambient'], function (bot, message) {
+  bot.reply(message, getMessage('REESE'))
+})
+
+controller.hears('asher', ['ambient'], function (bot, message) {
+  bot.reply(message, getMessage('ASHER'))
+})
+
+controller.hears('kellan', ['ambient'], function (bot, message) {
+  bot.reply(message, getMessage('KELLAN'))
+})

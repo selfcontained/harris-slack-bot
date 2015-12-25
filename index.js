@@ -86,3 +86,7 @@ controller.hears('kellan', ['ambient'], function (bot, message) {
 controller.hears('bannana', ['ambient'], function (bot, message) {
   bot.reply(message, getMessage('BANNANA'))
 })
+
+controller.hears('star wars', ['ambient'], function (bot, message) {
+  bot.reply(message, getMessage('STAR_WARS'))
+})

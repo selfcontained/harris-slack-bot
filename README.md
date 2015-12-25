@@ -1,16 +1,5 @@
-# node-slack-bot
-A super simple node.js slack bot
+# Harris Fam Bot
 
-Clone the repo and `npm install`
+![img](https://dl.dropboxusercontent.com/u/4286295/kellan-police.jpg)
 
-Running locally:
-
-    SLACK_TOKEN=<YOUR_SLACK_TOKEN> npm start
-
-Building with Docker:
-
-    docker build -t beepboophq/node-slack-bot .
-
-Running
-
-    docker run -it --rm -e SLACK_TOKEN=<YOUR_SLACK_TOKEN> beepboophq/node-slack-bot
+Fun and games for the Harris family.

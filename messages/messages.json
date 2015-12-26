@@ -9,19 +9,24 @@
   ],
   "DEVIN": [
     "Did you know that Devin reads more than anyone I know?",
-    "That Devin has some big hair yo!"
+    "That Devin has some big hair yo!",
+    "I think Devin's favorite Christmas present was new socks! :santa:"
   ],
   "REESE": [
     "Believe it or not, Reese really likes Reese's peanut butter cups.  But who doesn't?",
-    "If you ever want to make Reese happy, just give her a dragon."
+    "If you ever want to make Reese happy, just give her a dragon.",
+    "Reese, those boots are like whoa! :boot:"
   ],
   "ASHER": [
     "Asher has a really ugly sweater.",
-    "This Christmas Asher got a really cool helicopter."
+    "This Christmas Asher got a really cool helicopter.",
+    "Did you know Asher likes his T-Rex.",
+    "Asher is quickly becoming one of the best helicopter pilots around! :helicopter:"
   ],
   "KELLAN": [
     "I haven't met anyone that loves Batman more than Kellan, except maybe Devin when he was little.",
-    "Did you know Kellan calls chocolate chips ging gings?"
+    "Did you know Kellan calls chocolate chips ging gings?",
+    "Kellan thought every Christmas present was going to be a helicopter :gift: :helicopter:"
   ],
   "BANNANA": [
     "I love :banana:!  Do you like bannanas? :banana: :banana: :banana:",
@@ -52,6 +57,9 @@
   "CHORES_NO_CHORE": "It doesn't look like you have a chore *{.member}*. :cry:",
   "CHORES_COMPLETE": [
     "Nice job *{.member}*, you nailed it! :hammer:",
-    "Wow, that was like, really really fast.  Nice work! :punch:"
+    "Wow, that was like, really really fast.  Nice work! :punch:",
+    "Good job!",
+    "Phew, your done. :cold_sweat:",
+    "That took forever.  At least it's over! :stuck_out_tongue_winking_eye:"
   ]
 }

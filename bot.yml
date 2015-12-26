@@ -1,3 +1,10 @@
 name: harrisbot
 description: Bot for the Harris Family
 avatar: avatar.png
+config:
+  - name: CHORES
+    friendly_name: Chores
+    info: Comma seperated list of chores
+  - name: CHORES_MEMBERS
+    friendly_name: Chore Members
+    info: Comma seperated list of members doing chores

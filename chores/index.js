@@ -6,6 +6,14 @@ module.exports = function (controller, dictionary, options) {
   var atBot = ['direct_message', 'direct_mention', 'mention']
 
   controller.hears('show chores', atBot, function (bot, message) {
+    var allChores = chores.chores.map(function (chore) {
+      return ['+', chore.name].join(' ')
+    })
+
+    bot.reply(message, allChores.join('\n'))
+  })
+
+  controller.hears('show assigned chores', atBot, function (bot, message) {
     var assignedChores = Object.keys(chores.assigned).map(function (member) {
       return ['+', member, 'has', chores.assigned[member].name].join(' ')
     })
@@ -17,18 +25,6 @@ module.exports = function (controller, dictionary, options) {
     assignedChores.unshift('```')
     assignedChores.push('```')
     bot.reply(message, assignedChores.join('\n'))
-  })
-
-  controller.hears('reset assigned chores', atBot, function (bot, message) {
-    chores.resetAssigned()
-
-    bot.reply(message, dictionary('CHORES_CLEARED'))
-  })
-
-  controller.hears('reset chores', atBot, function (bot, message) {
-    chores.resetChores()
-
-    bot.reply(message, dictionary('CHORES_RESET'))
   })
 
   controller.hears('show available chores', atBot, function (bot, message) {
@@ -44,6 +40,18 @@ module.exports = function (controller, dictionary, options) {
     available.push('```')
     bot.reply(message, dictionary('CHORES_AVAILABLE'))
     bot.reply(message, available.join('\n'))
+  })
+
+  controller.hears('reset chores', atBot, function (bot, message) {
+    chores.resetChores()
+
+    bot.reply(message, dictionary('CHORES_RESET'))
+  })
+
+  controller.hears('reset assigned chores', atBot, function (bot, message) {
+    chores.resetAssigned()
+
+    bot.reply(message, dictionary('CHORES_CLEARED'))
   })
 
   controller.hears('give me a chore', atBot, function (bot, message) {
@@ -128,5 +136,22 @@ module.exports = function (controller, dictionary, options) {
         convo.say(dictionary('CHORES_COMPLETE', { member: member }))
       })
     })
+  })
+
+  controller.hears('chores help', atBot, function (bot, message) {
+    var helpText = [
+      "Here's what I know about chores...",
+      '```',
+      '"show chores" - List all of the chores currently available to be assigned',
+      '"show assigned chores" - List all of the chores currently assigned to someone',
+      '"show available chores" - List all of chores available for assignment',
+      '"reset chores" - Make all chores available for assignment',
+      '"reset assigned chores" - Clear any currently assigned chores',
+      '"give me a chore" - Request a chore',
+      '"done with chore" - Report completion of chore',
+      '```'
+    ]
+
+    bot.reply(message, helpText.join('\n'))
   })
 }

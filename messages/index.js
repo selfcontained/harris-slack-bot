@@ -1,6 +1,7 @@
 var messages = require('./messages')
+var inject = require('./inject')
 
-module.exports = function (key) {
+module.exports = function (key, params) {
   key = (key || '').toUpperCase()
 
   var value = messages[key]
@@ -10,8 +11,8 @@ module.exports = function (key) {
   }
 
   if (Array.isArray(value)) {
-    return value[Math.floor(Math.random() * value.length)]
+    value = value[Math.floor(Math.random() * value.length)]
   }
 
-  return value
+  return params === undefined ? value : inject(value, params)
 }

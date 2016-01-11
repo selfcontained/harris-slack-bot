@@ -1,6 +1,7 @@
 name: harrisbot
 description: Bot for the Harris Family
 avatar: avatar.png
+background: images/background.jpg
 config:
   - name: CHORES
     friendly_name: Chores
@@ -8,3 +9,6 @@ config:
   - name: CHORES_MEMBERS
     friendly_name: Chore Members
     info: Comma seperated list of members doing chores
+screenshots:
+  - screenshot: images/screenshot-1.png
+  - screenshot: images/screenshot-2.png

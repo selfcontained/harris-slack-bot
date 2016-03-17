@@ -39,6 +39,7 @@
   ],
   "BACON": "mmmm, bacon! :pig:",
 
+  "CHORES_NO_DATA": "Sorry, I don't seem to have any chore data setup for you. :cry:",
   "CHORES_NO_ASSIGNED": "No one has any chores, what a bunch of bums! :cry:",
   "CHORES_CLEARED": "You got it.  Everyone is ready for a new chore. :hugging_face:",
   "CHORES_RESET": "All the chores are up for grab now.  It's anyone's game! :wink:",

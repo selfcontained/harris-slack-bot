@@ -1,11 +1,29 @@
 var Chores = require('./lib/')
 
-module.exports = function (controller, dictionary, options) {
-  var chores = Chores(options)
+module.exports = function (controller, beepboop, dictionary) {
+  // map of chore objects by team id
+  var choreMap = {}
+
+  beepboop.on('add_resource', function (message) {
+    var chores = Chores({
+      chores: (message.resource['CHORES'] || '').split(','),
+      members: (message.resource['CHORES_MEMBERS'] || '').split(',')
+    })
+
+    choreMap[message.resource.SlackTeamID] = chores
+  })
+
 
   var atBot = ['direct_message', 'direct_mention', 'mention']
 
   controller.hears('show chores', atBot, function (bot, message) {
+    var chores = choreMap[bot.team_info.id]
+    if (!chores || !chores.chores.length) {
+      console.log('No chore object found for team %s', bot.team_info.id)
+      bot.reply(message, dictionary('CHORES_NO_DATA'))
+      return
+    }
+
     var allChores = chores.chores.map(function (chore) {
       return ['+', chore.name].join(' ')
     })
@@ -14,6 +32,8 @@ module.exports = function (controller, dictionary, options) {
   })
 
   controller.hears('show assigned chores', atBot, function (bot, message) {
+    var chores = choreMap[bot.team_info.id]
+
     var assignedChores = Object.keys(chores.assigned).map(function (member) {
       return ['+', member, 'has', chores.assigned[member].name].join(' ')
     })
@@ -28,6 +48,8 @@ module.exports = function (controller, dictionary, options) {
   })
 
   controller.hears('show available chores', atBot, function (bot, message) {
+    var chores = choreMap[bot.team_info.id]
+
     var available = chores.available.map(function (chore) {
       return ['+', chore.name].join(' ')
     })
@@ -43,12 +65,16 @@ module.exports = function (controller, dictionary, options) {
   })
 
   controller.hears('reset chores', atBot, function (bot, message) {
+    var chores = choreMap[bot.team_info.id]
+
     chores.resetChores()
 
     bot.reply(message, dictionary('CHORES_RESET'))
   })
 
   controller.hears('reset assigned chores', atBot, function (bot, message) {
+    var chores = choreMap[bot.team_info.id]
+
     chores.resetAssigned()
 
     bot.reply(message, dictionary('CHORES_CLEARED'))
@@ -56,6 +82,8 @@ module.exports = function (controller, dictionary, options) {
 
   controller.hears('give me a chore', atBot, function (bot, message) {
     bot.startConversation(message, function (err, convo) {
+      var chores = choreMap[bot.team_info.id]
+
       if (err) {
         return console.log(err)
       }
@@ -104,6 +132,8 @@ module.exports = function (controller, dictionary, options) {
 
   controller.hears('done with chore', atBot, function (bot, message) {
     bot.startConversation(message, function (err, convo) {
+      var chores = choreMap[bot.team_info.id]
+
       if (err) {
         return console.log(err)
       }

@@ -4,22 +4,33 @@ module.exports = function (controller, beepboop, dictionary) {
   // map of chore objects by team id
   var choreMap = {}
 
-  beepboop.on('add_resource', function (message) {
-    var chores = Chores({
-      chores: (message.resource['CHORES'] || '').split(','),
-      members: (message.resource['CHORES_MEMBERS'] || '').split(',')
+  beepboop
+    .on('add_resource', function (message) {
+      var chores = Chores({
+        chores: (message.resource['CHORES'] || '').split(','),
+        members: (message.resource['CHORES_MEMBERS'] || '').split(',')
+      })
+
+      choreMap[message.resourceID] = chores
     })
+    .on('update_resource', function (message) {
+      var chores = Chores({
+        chores: (message.resource['CHORES'] || '').split(','),
+        members: (message.resource['CHORES_MEMBERS'] || '').split(',')
+      })
 
-    choreMap[message.resource.SlackTeamID] = chores
-  })
-
+      choreMap[message.resourceID] = chores
+    })
+    .on('remove_resource', function (message) {
+      delete choreMap[message.resourceID]
+    })
 
   var atBot = ['direct_message', 'direct_mention', 'mention']
 
   controller.hears('show chores', atBot, function (bot, message) {
-    var chores = choreMap[bot.team_info.id]
+    var chores = choreMap[bot.config.resourceID]
     if (!chores || !chores.chores.length) {
-      console.log('No chore object found for team %s', bot.team_info.id)
+      console.log('No chore object found for resource %s', bot.config.resourceID)
       bot.reply(message, dictionary('CHORES_NO_DATA'))
       return
     }
@@ -32,7 +43,7 @@ module.exports = function (controller, beepboop, dictionary) {
   })
 
   controller.hears('show assigned chores', atBot, function (bot, message) {
-    var chores = choreMap[bot.team_info.id]
+    var chores = choreMap[bot.config.resourceID]
 
     var assignedChores = Object.keys(chores.assigned).map(function (member) {
       return ['+', member, 'has', chores.assigned[member].name].join(' ')
@@ -48,7 +59,7 @@ module.exports = function (controller, beepboop, dictionary) {
   })
 
   controller.hears('show available chores', atBot, function (bot, message) {
-    var chores = choreMap[bot.team_info.id]
+    var chores = choreMap[bot.config.resourceID]
 
     var available = chores.available.map(function (chore) {
       return ['+', chore.name].join(' ')
@@ -65,7 +76,7 @@ module.exports = function (controller, beepboop, dictionary) {
   })
 
   controller.hears('reset chores', atBot, function (bot, message) {
-    var chores = choreMap[bot.team_info.id]
+    var chores = choreMap[bot.config.resourceID]
 
     chores.resetChores()
 
@@ -73,7 +84,7 @@ module.exports = function (controller, beepboop, dictionary) {
   })
 
   controller.hears('reset assigned chores', atBot, function (bot, message) {
-    var chores = choreMap[bot.team_info.id]
+    var chores = choreMap[bot.config.resourceID]
 
     chores.resetAssigned()
 
@@ -82,7 +93,7 @@ module.exports = function (controller, beepboop, dictionary) {
 
   controller.hears('give me a chore', atBot, function (bot, message) {
     bot.startConversation(message, function (err, convo) {
-      var chores = choreMap[bot.team_info.id]
+      var chores = choreMap[bot.config.resourceID]
 
       if (err) {
         return console.log(err)
@@ -132,7 +143,7 @@ module.exports = function (controller, beepboop, dictionary) {
 
   controller.hears('done with chore', atBot, function (bot, message) {
     bot.startConversation(message, function (err, convo) {
-      var chores = choreMap[bot.team_info.id]
+      var chores = choreMap[bot.config.resourceID]
 
       if (err) {
         return console.log(err)

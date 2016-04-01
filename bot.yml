@@ -6,11 +6,9 @@ config:
   - name: CHORES
     friendly_name: Chores
     info: Comma seperated list of chores
-    global: true
   - name: CHORES_MEMBERS
     friendly_name: Chore Members
     info: Comma seperated list of members doing chores
-    global: true
 screenshots:
   - screenshot: images/screenshot-1.png
   - screenshot: images/screenshot-2.png

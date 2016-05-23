@@ -15,6 +15,6 @@ config:
 screenshots:
   - screenshot: images/screenshot-1.png
   - screenshot: images/screenshot-2.png
-slackscopes
+slackscopes:
   - bot
   - incoming-webhook

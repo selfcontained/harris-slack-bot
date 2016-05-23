@@ -6,6 +6,7 @@ module.exports = function (controller, beepboop, dictionary) {
 
   beepboop
     .on('add_resource', function (message) {
+      console.log('add_resource: ', message)
       var chores = Chores({
         chores: (message.resource['CHORES'] || '').split(','),
         members: (message.resource['CHORES_MEMBERS'] || '').split(',')

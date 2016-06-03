@@ -12,3 +12,7 @@ var beepboop = BeepBoop.start(controller, {
 
 require('./sayings/')(controller, dictionary)
 require('./chores/')(controller, beepboop, dictionary)
+
+setInterval(() => {
+  console.log('Logging testing: ' + Date.now())
+}, 1000)

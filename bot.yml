@@ -12,6 +12,12 @@ config:
   - name: CHORES_MEMBERS
     friendly_name: Chore Members
     info: Comma seperated list of members doing chores
+  - name: VERSION
+    friendly_name: Version 1
+    global: true
+  - name: VERSION
+    friendly_name: Version 2
+    global: true
 screenshots:
   - screenshot: images/screenshot-1.png
   - screenshot: images/screenshot-2.png

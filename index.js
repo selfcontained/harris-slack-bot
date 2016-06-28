@@ -1,3 +1,5 @@
+console.log('Persist URL: ', process.env.BEEPBOOP_PERSIST_URL)
+
 var Botkit = require('botkit')
 var BeepBoop = require('beepboop-botkit')
 var dictionary = require('./messages/')

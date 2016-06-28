@@ -1,4 +1,5 @@
 console.log('Persist URL: ', process.env.BEEPBOOP_PERSIST_URL)
+console.log('Version: ', process.env.VERSION)
 
 var Botkit = require('botkit')
 var BeepBoop = require('beepboop-botkit')

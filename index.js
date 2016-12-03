@@ -19,5 +19,3 @@ require('./chores/')(controller, beepboop, dictionary)
 setInterval(() => {
   console.log('Logging testing: ' + Date.now())
 }, 1000)
-
-throw new Error('whoops')
